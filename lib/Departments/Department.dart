@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:programme_information_management_system/Departments/ArchitectDepartment/ADepartment.dart';
+import 'package:programme_information_management_system/Departments/ECEDepartment/ECEDepartment.dart';
+import 'package:programme_information_management_system/Departments/EDepartment/EDepartment.dart';
+import 'package:programme_information_management_system/Departments/ScienceDepartment/ScienceDepartment.dart';
 
 import 'CDepartment/CDepartment.dart';
+import 'ITDepartment/ITDepartment.dart';
 
 class DepartmentPage extends StatelessWidget {
   @override
@@ -83,8 +88,7 @@ class DepartmentList extends StatelessWidget {
             image: department.image,
             onTap: () {
               // Define navigation when the department card is tapped
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CDepartmentPage()));
+
             },
           );
         }).toList(),
@@ -167,6 +171,8 @@ class DepartmentCard extends StatelessWidget {
                   SizedBox(height: 8),
                   ElevatedButton.icon(
                     onPressed: () {
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ECEDepartmentPage()));
                       // Add functionality to display department details
                     },
                     icon: Icon(

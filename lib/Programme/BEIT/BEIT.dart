@@ -62,7 +62,7 @@ class InformationTab extends StatefulWidget {
 
 
 class _InformationTabState extends State<InformationTab> {
-  String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/departmentdetails/D04';
+  String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/programmedetails/P08';
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +85,17 @@ class _InformationTabState extends State<InformationTab> {
 
       final Department = jsonData['department'][0];
       final departmentname = Department['dname'];
-      final establishedDate = Department['established_date'];
-      final datePart = establishedDate.split('T')[0];
-      final programmOffered = Department['nprogram'].toString();
+      // final establishedDate = Department['established_date'];
+      // final datePart = establishedDate.split('T')[0];
+      // final programmOffered = Department['nprogram'].toString();
       final programList = jsonData['Programme'][0]; 
       final programName = programList['pname'];
+      final programDuration = (programList['programme_duration']).toString();
+      final establishedDate = programList['established_date'];
+      final establishedDataPart =establishedDate.split('T')[0];
+      final lastReviewDate = programList['last_reviwed_date'];
+      final reviewdDatePart = lastReviewDate.split('T')[0];
+     
       final StaffList = jsonData['staff'][0];
       final hodname = StaffList['name'];
       final email = StaffList['email'];
@@ -169,19 +175,7 @@ class _InformationTabState extends State<InformationTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Name of Institute:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'College of Science and Technology',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Title of the Award:',
+              'Department:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -193,38 +187,50 @@ class _InformationTabState extends State<InformationTab> {
             ),
             SizedBox(height: 16),
             Text(
-              'Courses Offered:',
+              'Title of the Award:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              programmOffered,
+              programName,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
             Text(
-              'Award Granting Body:',
+              'Programme Duration:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'The Royal University of Bhutan',
+              programDuration,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
             Text(
-              'Established Date:',
+              'Established Date: ',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              datePart,
+              establishedDataPart,
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Last Review Date:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              reviewdDatePart,
               style: TextStyle(fontSize: 16),
             ),
           ],
@@ -237,7 +243,7 @@ class _InformationTabState extends State<InformationTab> {
             borderRadius: BorderRadius.circular(15.0), // Add border radius as needed
           ),
        child: ExpansionTile(
-              title: Text('Programme'),
+              title: Text('Programme Batch'),
               children: [
                 Container(
                   padding: EdgeInsets.all(16.0),
@@ -255,7 +261,7 @@ class _InformationTabState extends State<InformationTab> {
                     children: <Widget>[
                       Center(
                         child: Text(
-                          'Programme Offered:',
+                          'Current Batch of Students',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -282,7 +288,7 @@ class _InformationTabState extends State<InformationTab> {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              programName,
+                              'Fourth Years : 11th batch',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -310,7 +316,7 @@ class _InformationTabState extends State<InformationTab> {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              'Program 2',
+                              'First Years : 14th batch',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -337,7 +343,7 @@ class _InformationTabState extends State<InformationTab> {
             borderRadius: BorderRadius.circular(8.0), // Add border radius as needed
           ),
           child: ExpansionTile(
-          title: Text('Current HoD'),
+          title: Text('Present Program Leader'),
           children: [
             Container(
               margin: EdgeInsets.all(1.0),

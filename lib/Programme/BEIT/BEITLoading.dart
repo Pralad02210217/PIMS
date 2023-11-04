@@ -181,7 +181,7 @@ class _InformationTabState extends State<InformationTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Name of Institute:',
+              'Department:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class _InformationTabState extends State<InformationTab> {
       ),
             SizedBox(height: 16),
             Text(
-              'Courses Offered:',
+              'Programme Duration',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -244,19 +244,28 @@ class _InformationTabState extends State<InformationTab> {
       ),
             SizedBox(height: 16),
             Text(
-              'Award Granting Body:',
+              'Established Date',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              'The Royal University of Bhutan',
-              style: TextStyle(fontSize: 16),
-            ),
+            SkeletonAnimation(
+        shimmerColor: Colors.grey,
+        borderRadius: BorderRadius.circular(10.0),
+        shimmerDuration: 1000,
+        child: Container(
+          width: 150,
+          height: 20,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[300],
+          ),
+        ),
+      ),
             SizedBox(height: 16),
             Text(
-              'Established Date:',
+              'Last Review Date:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

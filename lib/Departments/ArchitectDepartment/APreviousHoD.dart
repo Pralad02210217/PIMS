@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 class PreviousHodsContent extends StatelessWidget {
-  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/departmenthod/D04';
+  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students//department/fullHod/D01';
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +67,31 @@ class _CenterLineLayoutState extends State<CenterLineLayout> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LeftProfileSet(),
+          LeftProfileSet(apiResponse: widget.apiResponse),
           Align(
             alignment: Alignment.center, // Center the VerticalLine vertically
             child: VerticalLine(),
           ),
-          RightProfileSet(),
+          RightProfileSet(apiResponse: widget.apiResponse),
         ],
       ),
     );
   }
 }
 
-
 class LeftProfileSet extends StatelessWidget {
+  final List<dynamic> apiResponse;
+
+  LeftProfileSet({required this.apiResponse});
+
   @override
   Widget build(BuildContext context) {
+    // Create LeftProfileContainer for the first entry in the JSON
+    LeftProfileContainer(apiResponse: apiResponse);
+
     return Row(
       children: [
-        LeftProfileContainer(),
+        LeftProfileContainer(apiResponse: apiResponse),
         SizedBox(width: 16.0), // Space between sets
       ],
     );
@@ -93,26 +99,55 @@ class LeftProfileSet extends StatelessWidget {
 }
 
 class RightProfileSet extends StatelessWidget {
+  final List<dynamic> apiResponse;
+
+  RightProfileSet({required this.apiResponse});
+
+
   @override
   Widget build(BuildContext context) {
+      print(apiResponse);
+    // Create RightProfileContainer for the first entry in the JSON (if applicable)
+
     return Row(
       children: [
         SizedBox(width: 16.0), // Space between sets
-        RightProfileContainer(),
+        RightProfileContainer(apiResponse: apiResponse),
       ],
     );
   }
 }
 
+
 class LeftProfileContainer extends StatelessWidget {
+  final dynamic apiResponse;
+  LeftProfileContainer({
+    required this.apiResponse,
+  });
+  
+  
   @override
   Widget build(BuildContext context) {
+
+    final imageLink= 'https://www.cst.edu.bt/images/faculty-profile/archdept/sumitra.jpg';
+    final name = 'Chimi';
+    final starting_tenure = apiResponse[1]['starting_tenure'];
+    final dateStartingTenure = '02/01/2016';
+    final ending_tenure = apiResponse[1]['ending_tenure'];
+    final dateEndingTenure = '02/01/2012';
+    final link1 = 'https://www.cst.edu.bt/images/faculty-profile/archdept/SangayPenjor.jpg';
+    final name1 = 'Leki Dorji';
+     final starting_tenure1 = apiResponse[3]['starting_tenure'];
+    final dateStartingTenure1 = '02/01/2007';
+    final ending_tenure1 = apiResponse[3]['ending_tenure'];
+    final dateEndingTenure1 = '04/09/2002';
+
     return Transform.translate(
       offset: Offset(0.0, 0.0), // Adjust the offset (x, y) as needed
       child: Column(
         children: [
           SizedBox(height: 30.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: '${imageLink}'),
           SizedBox(height: 120.0),
           Container(
             decoration: BoxDecoration(
@@ -121,17 +156,17 @@ class LeftProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure}"),
+                Text("Ending Tenure: ${dateEndingTenure}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: '${link1}'),
           SizedBox(height: 120.0),
           Container(
             decoration: BoxDecoration(
@@ -140,11 +175,11 @@ class LeftProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name1}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure1}"),
+                Text("Ending Tenure: ${dateEndingTenure1}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
@@ -156,8 +191,25 @@ class LeftProfileContainer extends StatelessWidget {
 }
 
 class RightProfileContainer extends StatelessWidget {
+  final dynamic apiResponse;
+    RightProfileContainer({
+    required this.apiResponse,
+  });
   @override
   Widget build(BuildContext context) {
+    final link = 'https://www.cst.edu.bt/images/faculty-profile/archdept/chimi.jpg';
+    final name = 'Sumitra Ghalley';
+    final startingTenure = apiResponse[0]['starting_tenure'];
+    final dateStartingTenure = '02/01/2020'; 
+    final endingTenure = apiResponse[0]['ending_tenure'];
+    final dateEndingTenure = '02/01/2024';
+    final name1 = 'Sangay Penjor';
+    final startingTenure1 = apiResponse[2]['starting_tenure'];
+    final dateStartingTenure1 = '02/01/2012'; 
+    final endingTenure1 = apiResponse[2]['ending_tenure'];
+    final dateEndingTenure1 = '02/01/2007';
+
+    final link2 = 'https://i.postimg.cc/SKJV4DR3/R-1.png';
     return Transform.translate(
       offset: Offset(0.0, 5.0), // Adjust the offset (x, y) as needed
       child: Column(
@@ -169,17 +221,17 @@ class RightProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure}"),
+                Text("Ending Tenure: ${dateEndingTenure}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: '${link}'),
           SizedBox(height: 120.0,),
            Container(
             decoration: BoxDecoration(
@@ -188,17 +240,17 @@ class RightProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name1}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure1}"),
+                Text("Ending Tenure: ${dateEndingTenure1}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
            SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: '${link2}'),
         ],
       ),
     );

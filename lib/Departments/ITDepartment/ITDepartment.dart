@@ -247,7 +247,7 @@ class _InformationTabState extends State<InformationTab> {
                     ),
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  height: 250,
+                  height: 160,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -281,34 +281,6 @@ class _InformationTabState extends State<InformationTab> {
                             SizedBox(width: 8),
                             Text(
                               programName,
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF5F3F3),
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(
-                            color: Color(0xFFF97E0C),
-                            width: 2.0,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.school,
-                              color: Color(0xFF000000),
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Program 2',
                               style: TextStyle(
                                 fontSize: 16,
                               ),

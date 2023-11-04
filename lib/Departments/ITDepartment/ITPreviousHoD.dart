@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 class PreviousHodsContent extends StatelessWidget {
-  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/departmenthod/D04';
+  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students//department/fullHod/D04';
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +67,31 @@ class _CenterLineLayoutState extends State<CenterLineLayout> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LeftProfileSet(),
+          LeftProfileSet(apiResponse: widget.apiResponse),
           Align(
             alignment: Alignment.center, // Center the VerticalLine vertically
             child: VerticalLine(),
           ),
-          RightProfileSet(),
+          RightProfileSet(apiResponse: widget.apiResponse),
         ],
       ),
     );
   }
 }
 
-
 class LeftProfileSet extends StatelessWidget {
+  final List<dynamic> apiResponse;
+
+  LeftProfileSet({required this.apiResponse});
+
   @override
   Widget build(BuildContext context) {
+    // Create LeftProfileContainer for the first entry in the JSON
+    LeftProfileContainer(apiResponse: apiResponse);
+
     return Row(
       children: [
-        LeftProfileContainer(),
+        LeftProfileContainer(apiResponse: apiResponse),
         SizedBox(width: 16.0), // Space between sets
       ],
     );
@@ -93,26 +99,47 @@ class LeftProfileSet extends StatelessWidget {
 }
 
 class RightProfileSet extends StatelessWidget {
+  final List<dynamic> apiResponse;
+
+  RightProfileSet({required this.apiResponse});
+
+
   @override
   Widget build(BuildContext context) {
+      print(apiResponse);
+    // Create RightProfileContainer for the first entry in the JSON (if applicable)
+
     return Row(
       children: [
         SizedBox(width: 16.0), // Space between sets
-        RightProfileContainer(),
+        RightProfileContainer(apiResponse: apiResponse),
       ],
     );
   }
 }
 
+
 class LeftProfileContainer extends StatelessWidget {
+  final dynamic apiResponse;
+  LeftProfileContainer({
+    required this.apiResponse,
+  });
+  
+  
   @override
   Widget build(BuildContext context) {
+    final name = apiResponse[1]['name'];
+    final starting_tenure = apiResponse[1]['starting_tenure'];
+    final dateStartingTenure = starting_tenure.split('T')[0];
+    final ending_tenure = apiResponse[1]['ending_tenure'];
+    final dateEndingTenure = ending_tenure.split('T')[0];
+    final link = apiResponse[0]['imageurl'];
     return Transform.translate(
       offset: Offset(0.0, 0.0), // Adjust the offset (x, y) as needed
       child: Column(
         children: [
           SizedBox(height: 30.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: 'https://www.cst.edu.bt/images/faculty-profile/itd/tamdinwangchukitd.jpeg'),
           SizedBox(height: 120.0),
           Container(
             decoration: BoxDecoration(
@@ -121,34 +148,18 @@ class LeftProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
+                Text("Starting Tenure: ${dateStartingTenure}"),
+                Text("Ending Tenure: ${dateEndingTenure}"),
                 Text("Office: 2nd floor ITC"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
-          SizedBox(height: 120.0),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              border: Border.all(color: Color(0xff48992c)), 
-            ),
-            child: Column(
-              children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
-                Text("Contact: 17777777"),
-              ],
-            ),
-          ),
+          OvalImageContainer(imageUrl: '${link}'),
+
         ],
       ),
     );
@@ -156,8 +167,18 @@ class LeftProfileContainer extends StatelessWidget {
 }
 
 class RightProfileContainer extends StatelessWidget {
+  final dynamic apiResponse;
+    RightProfileContainer({
+    required this.apiResponse,
+  });
   @override
   Widget build(BuildContext context) {
+    final link = apiResponse[1]['imageurl'];
+    final name = apiResponse[0]['name'];
+    final startingTenure = apiResponse[0]['starting_tenure'];
+    final dateStartingTenure = startingTenure.split('T')[0]; 
+    final endingTenure = apiResponse[0]['ending_tenure'];
+    final dateEndingTenure = endingTenure.split('T')[0];
     return Transform.translate(
       offset: Offset(0.0, 5.0), // Adjust the offset (x, y) as needed
       child: Column(
@@ -179,7 +200,7 @@ class RightProfileContainer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+          OvalImageContainer(imageUrl: '${link}'),
           SizedBox(height: 120.0,),
            Container(
             decoration: BoxDecoration(
@@ -188,17 +209,16 @@ class RightProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure}"),
+                Text("Ending Tenure: ${dateEndingTenure}"),
+                Text("Office: 3rd floor ITC"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
-           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: 'https://cst.edu.bt/images/Campus/cstcampus2.jpg'),
+
         ],
       ),
     );
@@ -237,7 +257,7 @@ class VerticalLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 2.0,
-      height: 800.0, // Set a fixed height, adjust as needed
+      height: 600.0, // Set a fixed height, adjust as needed
       color: Colors.black,
       child: CustomPaint(
         painter: LinePainter(),
@@ -258,7 +278,7 @@ class LinePainter extends CustomPainter {
     final middleX = size.width / 2;
 
     // Draw the middle vertical line
-    final start = Offset(middleX, 0);
+    final start = Offset(middleX, -80);
     final end = Offset(middleX, size.height);
     canvas.drawLine(start, end, paint);
 
