@@ -40,14 +40,14 @@ class _LandingPageState extends State<LandingPage> {
 
   List<String> imagePaths = [
     'assets/page-1/images/rectangle-2.png',
-    'assets/page-1/images/DSC03931.JPG',
-    'assets/page-1/images/DSC03938.JPG',
-    'assets/page-1/images/DSC03941.JPG',
-    'assets/page-1/images/DSC04026.JPG',
+    'assets/DSC03931.JPG',
+    'assets/DSC03938.JPG',
+    'assets/DSC03941.JPG',
+    'assets/DSC04026.JPG',
   ];
 
   TextStyle safeGoogleFont(
-    String fontName, {
+    String fontName, { 
     double fontSize = 14,
     FontWeight fontWeight = FontWeight.w400,
     Color color = Colors.black,

@@ -1,12 +1,6 @@
-// lib/Departments/Department.dart
-
 import 'package:flutter/material.dart';
-import 'package:programme_information_management_system/Departments/ArchitectDepartment/ADepartment.dart';
-import 'ITDepartment/ITDepartment.dart';
-import 'ECEDepartment/ECEDepartment.dart';
-import 'EDepartment/EDepartment.dart';
-import 'ScienceDepartment/ScienceDepartment.dart';
-import 'CDepartment/CDepartment.dart'; // Import the ITDepartment.dart file
+
+import 'CDepartment/CDepartment.dart';
 
 class DepartmentPage extends StatelessWidget {
   @override
@@ -18,9 +12,9 @@ class DepartmentPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SearchBar(), // Create a custom SearchBar widget
+          SearchBar(),
           SizedBox(height: 20),
-          DepartmentList(), // Create a custom DepartmentList widget
+          DepartmentList(),
         ],
       ),
     );
@@ -33,7 +27,7 @@ class SearchBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.blue,
-        borderRadius: BorderRadius.circular(50), // Create a rounded shape
+        borderRadius: BorderRadius.circular(50),
       ),
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -55,41 +49,42 @@ class DepartmentList extends StatelessWidget {
     List<DepartmentData> departments = [
       DepartmentData(
         name: 'Information Technology Department',
-        image: 'assets/IT.jpeg',
+        image: 'assets/undraw_Software_engineer_re_tnjc.png',
       ),
       DepartmentData(
         name: 'Civil Department',
-        image: 'assets/civil.jpeg',
+        image: 'assets/undraw_QA_engineers_dg5p.png',
       ),
       DepartmentData(
         name: 'Architecture Department',
-        image: 'assets/archi.jpeg',
+        image: 'assets/undraw_urban_design_kpu8.png',
       ),
       DepartmentData(
         name: 'Electrical Department',
-        image: 'assets/electrical.jpeg',
+        image: 'assets/undraw_electricity_k2ft.png',
       ),
       DepartmentData(
         name: 'Electronic and Communication Department',
-        image: 'assets/ECE.jpeg',
+        image: 'assets/undraw_circuit_sdmr.png',
       ),
       DepartmentData(
         name: 'Science And Humanities Department',
-        image: 'assets/SCi.jpeg',
+        image: 'assets/undraw_Science_re_mnnr.png',
       ),
       // Add more department data for other departments
     ];
 
     return Expanded(
       child: ListView(
-        scrollDirection: Axis.vertical, // Make the list scroll vertically
+        scrollDirection: Axis.vertical,
         children: departments.map((department) {
           return DepartmentCard(
             name: department.name,
             image: department.image,
             onTap: () {
               // Define navigation when the department card is tapped
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CDepartmentPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CDepartmentPage()));
             },
           );
         }).toList(),
@@ -107,7 +102,6 @@ class DepartmentData {
     required this.image,
   });
 }
-
 
 class DepartmentCard extends StatelessWidget {
   final String name;
@@ -127,61 +121,62 @@ class DepartmentCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0), // Set border radius to 30
+          borderRadius: BorderRadius.circular(30.0),
         ),
-        color: Color(0xFFFCDC7C), // Set the card color to #fcdc7c
-        child: Column(
+        color: Colors.grey[200],
+        child: Row(
           children: [
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange,
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0),
+                ),
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 50), // Add left margin to move the button inside
-                  child: ElevatedButton(
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  ElevatedButton.icon(
                     onPressed: () {
                       // Add functionality to display department details
                     },
-                    child: Text('Display'),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 35), // Adjust the margins for position
-                  child: Container(
-                    width: 100, // Set the width for the circular shape
-                    height: 100, // Set the height for the circular shape
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle, // Make it a circle
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.yellow, // Glow color
-                          blurRadius: 10, // Adjust the glow effect
-                        ),
-                      ],
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      color: Color.fromARGB(255, 245, 173, 4),
                     ),
-                    child: ClipOval(
-                      child: GlowingOverscrollIndicator(
-                        axisDirection: AxisDirection.down,
-                        color: Colors.yellow, // Glow color
-                        showLeading: false,
-                        showTrailing: false,
-                        child: Image.asset(
-                          image,
-                          fit: BoxFit.cover, // Fit the image within the container
-                        ),
-                      ),
-                    ),
+                    label: Text('Display'),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
