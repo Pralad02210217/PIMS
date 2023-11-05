@@ -55,26 +55,32 @@ class DepartmentList extends StatelessWidget {
       DepartmentData(
         name: 'Information Technology Department',
         image: 'assets/undraw_Software_engineer_re_tnjc.png',
+        pageToNavigate: ITDepartmentPage(),
       ),
       DepartmentData(
         name: 'Civil Department',
         image: 'assets/undraw_QA_engineers_dg5p.png',
+        pageToNavigate: CDepartmentPage(),
       ),
       DepartmentData(
         name: 'Architecture Department',
         image: 'assets/undraw_urban_design_kpu8.png',
+        pageToNavigate: ADepartmentPage(),
       ),
       DepartmentData(
         name: 'Electrical Department',
         image: 'assets/undraw_electricity_k2ft.png',
+        pageToNavigate: EDepartmentPage(),
       ),
       DepartmentData(
         name: 'Electronic and Communication Department',
         image: 'assets/undraw_circuit_sdmr.png',
+        pageToNavigate: ECEDepartmentPage(),
       ),
       DepartmentData(
         name: 'Science And Humanities Department',
         image: 'assets/undraw_Science_re_mnnr.png',
+        pageToNavigate: ScienceDepartmentPage(),
       ),
       // Add more department data for other departments
     ];
@@ -86,6 +92,7 @@ class DepartmentList extends StatelessWidget {
           return DepartmentCard(
             name: department.name,
             image: department.image,
+            pageToNavigate: department.pageToNavigate,
             onTap: () {
               // Define navigation when the department card is tapped
 
@@ -100,21 +107,28 @@ class DepartmentList extends StatelessWidget {
 class DepartmentData {
   final String name;
   final String image;
+    final Widget pageToNavigate; 
+
+  
 
   DepartmentData({
     required this.name,
     required this.image,
+    required this.pageToNavigate,
   });
 }
 
 class DepartmentCard extends StatelessWidget {
   final String name;
   final String image;
+  final Widget pageToNavigate; 
+  
   final VoidCallback onTap;
 
   DepartmentCard({
     required this.name,
     required this.image,
+    required this.pageToNavigate,
     required this.onTap,
   });
 
@@ -172,7 +186,7 @@ class DepartmentCard extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ECEDepartmentPage()));
+                      MaterialPageRoute(builder: (context) => pageToNavigate));
                       // Add functionality to display department details
                     },
                     icon: Icon(

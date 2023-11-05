@@ -24,7 +24,7 @@ class ScienceDepartmentPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Information Technology Department'),
+          title: Text('Science & Humanities Dept'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [

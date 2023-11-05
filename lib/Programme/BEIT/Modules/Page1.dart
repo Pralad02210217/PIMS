@@ -46,10 +46,21 @@ class _Page1State extends State<Page1> {
   Widget build(BuildContext context) {
   return ListView(
     children: <Widget>[
-      buildSemesterTable("Semester 1", semester1Data),
-      SizedBox(height: 16),
-      buildSemesterTable("Semester 2", semester2Data),
-      Text('Hello World'),
+      SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          height: 900,
+          child: Column(
+            children: [
+                buildSemesterTable("Semester 1", semester1Data),
+                SizedBox(height: 16),
+                buildSemesterTable("Semester 2", semester2Data),
+      
+            ],
+          ),
+        ),
+      )
+
     ],
   );
 }

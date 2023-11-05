@@ -24,7 +24,7 @@ class CDepartmentPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Information Technology Department'),
+          title: Text('Civil Department'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [

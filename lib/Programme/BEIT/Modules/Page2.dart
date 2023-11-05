@@ -1,97 +1,180 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class Page2 extends StatelessWidget {
-  final List<Map<String, String>> dataSemester1 = [
-    {'Name': 'John', 'Age': '30', 'Country': 'USA', 'Salary': '50000', 'Position': 'Engineer', 'Experience': '5 years'},
-    {'Name': 'John', 'Age': '30', 'Country': 'USA', 'Salary': '50000', 'Position': 'Engineer', 'Experience': '5 years'},
-    {'Name': 'Alice', 'Age': '25', 'Country': 'Canada', 'Salary': '60000', 'Position': 'Designer', 'Experience': '3 years'},
-    {'Name': 'Bob', 'Age': '35', 'Country': 'UK', 'Salary': '70000', 'Position': 'Manager', 'Experience': '7 years'},
-    {'Name': 'Eve', 'Age': '28', 'Country': 'Australia', 'Salary': '55000', 'Position': 'Developer', 'Experience': '4 years'},
-    // Add more data rows as needed
-  ];
+class Page2 extends StatefulWidget {
+  @override
+  _Page1State createState() => _Page1State();
+}
 
-  final List<Map<String, String>> dataSemester2 = [
-    {'Name': 'John', 'Age': '30', 'Country': 'USA', 'Salary': '50000', 'Position': 'Engineer', 'Experience': '5 years'},
-    {'Name': 'John', 'Age': '30', 'Country': 'USA', 'Salary': '50000', 'Position': 'Engineer', 'Experience': '5 years'},
-    {'Name': 'Alice', 'Age': '25', 'Country': 'Canada', 'Salary': '60000', 'Position': 'Designer', 'Experience': '3 years'},
-    {'Name': 'Bob', 'Age': '35', 'Country': 'UK', 'Salary': '70000', 'Position': 'Manager', 'Experience': '7 years'},
-    {'Name': 'Eve', 'Age': '28', 'Country': 'Australia', 'Salary': '55000', 'Position': 'Developer', 'Experience': '4 years'},
-    // Add more data rows as needed
-  ];
+class _Page1State extends State<Page2> {
+  late Future<List<Map<String, String>>> semester1Data;
+  late Future<List<Map<String, String>>> semester2Data;
+
+  @override
+  void initState() {
+    super.initState();
+    semester1Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/3');
+    semester2Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/4');
+  }
+
+ Future<List<Map<String, String>>>
+    fetchData(String apiUrl) async {
+  final response = await http.get(Uri.parse(apiUrl));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> apiResponse = json.decode(response.body);
+    final List<Map<String, String>> stringData = apiResponse
+        .map((item) {
+          final Map<String, String> stringItem = {};
+          item.forEach((key, value) {
+            stringItem[key] = value.toString();
+          });
+          return stringItem;
+        })
+        .toList();
+    print(stringData);
+    return stringData;
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
- 
-      body: ListView(
-        children: <Widget>[
-          Column(
+  return ListView(
+    children: <Widget>[
+      SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          height: 900,
+          child: Column(
             children: [
-              Text('Semester 3', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Row(
-                children: <Widget>[
-                  FixedColumn(data: dataSemester1),
-                  Expanded(
-                    child: SemesterTable(data: dataSemester1),
-                  ),
-                ],
-              ),
+                buildSemesterTable("Semester 3", semester1Data),
+                SizedBox(height: 16),
+                buildSemesterTable("Semester 4", semester2Data),
+      
             ],
           ),
-          SizedBox(height: 16), // Add spacing between tables
-          Column(
-            children: [
-              Text('Semester 4', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Row(
+        ),
+      )
+
+    ],
+  );
+}
+
+
+  Widget buildSemesterTable(String title, Future<List<Map<String, String>>> data) {
+    return Column(
+      children: [
+        Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FutureBuilder<List<Map<String, String>>>(
+          future: data,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Text('No data available.');
+            } else {
+              print(snapshot.data);
+              return Row(
                 children: <Widget>[
-                  FixedColumn(data: dataSemester2),
                   Expanded(
-                    child: SemesterTable(data: dataSemester2),
+                      child: FixedColumn(data: snapshot.data!),
+                    ),
+                  Expanded(
+                    child: SemesterTable(data: snapshot.data!, columnsToDisplay: ['mid', 'mname','module_credit','lecture_hour','tutorial_hour','theory_ca_marks','theory_exam_marks','practical_ca_marks','module_owner', 'borrowed_module']),
                   ),
                 ],
-              ),
-            ],
-          ),
-        ],
-      ),
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }
+final Map<String, String> columnHeadersMapping = {
+  
+  'mname': 'Name',
+  'module_credit' : 'Credit',
+  'lecture_hour' : 'Lecture Hour',
+  'tutorial_hour' : 'Tutorial Hour',
+  'practical_hour' : 'Practical Hour',
+  'theory_ca_marks' : 'Theory CA Marks',
+  'theory_exam_marks' : 'Thoery EX Marks',
+  'practical_ca_marks' : 'Practical CA Marks',
+  'module_owner': 'Module Owner',
+  'module_coordinator' : 'Module Coordinator',
+  'borrowed_module' : 'Borrowed Module',
+
+  // Add more key-value pairs for other columns as needed
+};
+final Map<String, String> moduleOwnerMapping = {
+  'D04': 'ITDEPT',
+  'D01': 'CIVILDEPT',
+  'D02': 'ELECTRICALDEPT',
+  'D03': 'ECEDEPT',
+  'D05' : 'Sci-Humanties Dept'
+  // Add more key-value pairs for other replacements as needed
+};
+
+final Map<String, String> moduleBorrowed = {
+  'Y' : 'Yes',
+  'N' : 'No',
+};
 
 class SemesterTable extends StatelessWidget {
   final List<Map<String, String>> data;
+  final List<String> columnsToDisplay;
 
-  SemesterTable({required this.data});
+  SemesterTable({required this.data, required this.columnsToDisplay});
 
   @override
   Widget build(BuildContext context) {
+    print(data);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        columnSpacing: 10.0, // Adjust spacing between columns if needed
+        columnSpacing: 10.0,
         columns: data.first.keys
-            .where((key) => key != 'Name')
+            .where((key) => columnsToDisplay.contains(key) && key != 'mid') // Filter columns to display
             .map((column) {
-          return DataColumn(
-            label: Text(column),
-            numeric: false,
-          );
-        }).toList(),
-        rows: data.map((row) {
-          return DataRow(
-            cells: data.first.keys
-                .where((key) => key != 'Name')
-                .map((column) {
-              return DataCell(
-                Text(row[column] ?? ""),
+              return DataColumn(
+                label: Text(columnHeadersMapping[column] ?? column),
+                numeric: false,
               );
             }).toList(),
+        rows: data.map((row) {
+          final moduleOwner = (row['module_owner'] ?? '').trim();
+          final borrowedModule = row['borrowed_module'];
+          if (borrowedModule != null) {
+            row['borrowed_module'] = moduleBorrowed[borrowedModule] ?? borrowedModule;
+          }
+          if (moduleOwner != null) {
+            row['module_owner'] = moduleOwnerMapping[moduleOwner] ?? moduleOwner;
+          }
+          return DataRow(
+            cells: data.first.keys
+                .where((key) => columnsToDisplay.contains(key) && key!= 'mid') // Filter columns to display
+                .map((column) {
+                  return DataCell(
+                    Text(row[column] ?? ""),
+                  );
+                }).toList(),
           );
         }).toList(),
       ),
     );
   }
 }
+
+
+
 
 
 class FixedColumn extends StatelessWidget {
@@ -104,10 +187,10 @@ class FixedColumn extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
-        columns: [DataColumn(label: Text('Name'))],
+        columns: [DataColumn(label: Text('Module Code'))],
         rows: data.map((row) {
           return DataRow(
-            cells: [DataCell(Text(row['Name'] ?? ""))],
+            cells: [DataCell(Text(row['mid'] ?? ""))],
           );
         }).toList(),
       ),
