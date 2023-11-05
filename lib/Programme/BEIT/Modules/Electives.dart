@@ -9,6 +9,8 @@ class Electives extends StatefulWidget {
 
 class _ElectivesState extends State<Electives> {
   List<Map<String, dynamic>> dataSemester1 = [];
+  List<Map<String, dynamic>> dataSemester2 = [];
+  List<Map<String, dynamic>> dataSemester3 = [];
 
   @override
   void initState() {
@@ -16,28 +18,34 @@ class _ElectivesState extends State<Electives> {
     fetchDataFromAPI();
   }
 
-  Future<void> fetchDataFromAPI() async {
+    Future<void> fetchDataFromAPI() async {
     final apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/electives/P08';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
-
       if (response.statusCode == 200) {
-        final List<dynamic> jsonData = json.decode(response.body);
-        print(jsonData);
+        final List<Map<String, dynamic>> jsonData = (json.decode(response.body) as List<dynamic>).cast<Map<String, dynamic>>();
 
-        setState(() {
-          dataSemester1 = jsonData.map((item) {
-            return {
-              'eid': item['eid'],
-              'pid': item['pid'],
-              'ename': item['ename'],
-              'specilization': item['specilization'],
-              'mcode': item['mcode'],
-            };
-          }).toList();
+        print(jsonData);
+          jsonData.forEach((item) {
+          item['eid'] = item['eid'].toString().trim();
         });
-      } else {
+
+        dataSemester1 = jsonData
+            .where((item) => item['eid'] == 'E1')
+            .toList();
+      print(dataSemester1);
+        dataSemester2 = jsonData
+            .where((item) => item['eid'] == 'E2')
+            .toList();
+
+        dataSemester3 = jsonData
+            .where((item) => item['eid'] == 'E3')
+            .toList();
+
+        setState(() {});
+      }
+    else {
         throw Exception('Failed to load data from the API');
       }
     } catch (e) {
@@ -48,37 +56,61 @@ class _ElectivesState extends State<Electives> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Text('Semester 1', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Row(
-                  children: <Widget>[
-                    FixedColumn(data: dataSemester1),
-                    Expanded(
-                      child: SemesterTable(data: dataSemester1),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          height: 900,
+          child: Column(
+            children: [
+              SectionWidget('Elective 1', dataSemester1),
+              SectionWidget('Elective 2', dataSemester2),
+              SectionWidget('Elective 3', dataSemester3),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
+
+class SectionWidget extends StatelessWidget {
+  final String sectionTitle;
+  final List<Map<String, dynamic>> data;
+
+  SectionWidget(this.sectionTitle, this.data);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(sectionTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Row(
+          children: <Widget>[
+            FixedColumn(data: data),
+            Expanded(
+              child: SemesterTable(data: data),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class SemesterTable extends StatelessWidget {
   final List<Map<String, dynamic>> data;
 
   SemesterTable({required this.data});
+      final Map<String, String> columnNames = {
+    'ename': 'Name',
+    'specilization': 'Specilization ',
+  };
 
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Text("No data available"); // Add a message for when there's no data.
+      return Text("No data available");
     }
 
     return SingleChildScrollView(
@@ -86,17 +118,17 @@ class SemesterTable extends StatelessWidget {
       child: DataTable(
         columnSpacing: 10.0,
         columns: data.first.keys
-            .where((key) => key != 'mcode' && key != 'pid') // Use the lambda function here
+            .where((key) => key != 'mcode' && key != 'pid' && key != 'eid')
             .map((column) {
           return DataColumn(
-            label: Text(column),
+            label: Text(columnNames[column] ??column),
             numeric: false,
           );
         }).toList(),
         rows: data.map((row) {
           return DataRow(
             cells: data.first.keys
-                .where((key) => key != 'mcode' && key != 'pid') // Use the lambda function here
+                .where((key) => key != 'mcode' && key != 'pid' && key != 'eid')
                 .map((column) {
               return DataCell(
                 Text(row[column].toString() ?? ""),
@@ -117,7 +149,7 @@ class FixedColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Text("No data available"); // Add a message for when there's no data.
+      return Text("No data available");
     }
 
     return SingleChildScrollView(
