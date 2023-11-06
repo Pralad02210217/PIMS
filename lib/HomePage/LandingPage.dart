@@ -25,7 +25,7 @@ class _LandingPageState extends State<LandingPage> {
       }
       _pageController.animateToPage(
         currentPage,
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 1000),
         curve: Curves.ease,
       );
     });
