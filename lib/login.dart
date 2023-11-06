@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'display.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class Login extends StatefulWidget {
   @override
@@ -10,6 +12,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   late Color mycolor;
   late Size mediaSize;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final String defaultUsername = "admin";
+  final String defaultPassword = "admin";
+  String errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +64,7 @@ class _LoginState extends State<Login> {
 
                   // Email Address
                   TextField(
+                    controller: usernameController,
                     decoration: InputDecoration(
                       labelText: 'Email Address',
                       prefixIcon: Padding(
@@ -69,6 +77,7 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 10),
                   // Password
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -85,7 +94,7 @@ class _LoginState extends State<Login> {
 
                   SizedBox(height: 50),
 
-                  //Login Button
+                  // Login Button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 70),
                     child: Container(
@@ -103,18 +112,34 @@ class _LoginState extends State<Login> {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Nagivate to the main app after successful login
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>  MyApp(),
-                            ),
-                          );
+                          // Check if entered credentials match the default username and password
+                          if (usernameController.text == defaultUsername &&
+                              passwordController.text == defaultPassword) {
+                            // Navigate to the main app after successful login
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyApp(),
+                              ),
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Wrong username or password",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                            );
+                            // // Show error message if credentials are incorrect
+                            // setState(() {
+                            //   errorMessage = "Incorrect username or password";
+                            // });
+                          }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors
-                              .transparent, //Make the button background transparent
-                          shadowColor: Colors.transparent, //Remove the shadow
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -205,6 +230,19 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
+                  
+                  // Error Message
+                  if (errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

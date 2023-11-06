@@ -3,6 +3,7 @@ import 'HomePage/LandingPage.dart'; // Import LandingPage.dart
 import 'AboutUs/AboutUs.dart'; // Import AboutUs.dart
 import 'Departments/Department.dart'; // Import Department.dart
 import 'Programme/Programme.dart'; // Import Programme.dart
+import 'login.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -191,6 +192,14 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUsPage())); // Navigate to the AboutUsPage
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.power_settings_new),
+            title: Text('Log Out'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Login())); // Navigate to the AboutUsPage
             },
           ),
         ],
