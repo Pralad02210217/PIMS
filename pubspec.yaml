@@ -51,6 +51,7 @@ dev_dependencies:
   skeleton_text: ^3.0.1
   http: ^1.1.0
   dio: ^5.3.3
+  flutter_svg: ^2.0.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,6 +68,11 @@ flutter:
   assets:
     - assets/
     - assets/page-1/images/
+    - Images/basketball_Login.jpeg
+    - Images/google_logo.png
+    - Images/email.svg
+    - Images/password.svg
+    - Images/password_hide.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

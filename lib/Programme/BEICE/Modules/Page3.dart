@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:skeleton_text/skeleton_text.dart';
 
-class Page1 extends StatefulWidget {
+class Page3 extends StatefulWidget {
   @override
   _Page1State createState() => _Page1State();
 }
 
-class _Page1State extends State<Page1> {
+class _Page1State extends State<Page3> {
   late Future<List<Map<String, String>>> semester1Data;
   late Future<List<Map<String, String>>> semester2Data;
 
   @override
   void initState() {
     super.initState();
-    semester1Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/1');
-    semester2Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/2');
+    semester1Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/5');
+    semester2Data = fetchData('https://node-api-6l0w.onrender.com/api/v1/students/modules/P08/6');
   }
 
  Future<List<Map<String, String>>>
@@ -53,9 +52,9 @@ class _Page1State extends State<Page1> {
           height: 900,
           child: Column(
             children: [
-                buildSemesterTable("Semester 1", semester1Data),
+                buildSemesterTable("Semester 5", semester1Data),
                 SizedBox(height: 16),
-                buildSemesterTable("Semester 2", semester2Data),
+                buildSemesterTable("Semester 6", semester2Data),
       
             ],
           ),

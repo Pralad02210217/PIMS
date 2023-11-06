@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
+
 import 'package:programme_information_management_system/Programme/BEIT/BEITModules.dart';
-import 'BEITPLs.dart';
-import 'BEITElectives.dart';
-import 'package:programme_information_management_system/DateRetrival/data_retrival.dart';
-import 'package:skeleton_text/skeleton_text.dart';
+import 'BEWPLs.dart';
+import 'BEWElectives.dart';
+
+import 'BEWLoading.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 
 
 
 
-class ITProgramPage1 extends StatelessWidget {
+void main() {
+  runApp(MaterialApp(
+    home: WProgramPage(),
+  ));
+}
+
+class WProgramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        
+        appBar: AppBar(
+          title: Text('Water Engineering'),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Information'),
+              Tab(text: 'Modules'),
+              Tab(text: 'Electives'),
+              Tab(text: 'Previous PLs'),
+            ],
+          ),
+        ),
         body: ITDepartmentContent(),
       ),
     );
@@ -42,76 +62,51 @@ class InformationTab extends StatefulWidget {
 
 
 class _InformationTabState extends State<InformationTab> {
-  final DataRetrievalService dataRetrievalService = DataRetrievalService();
-  List<Map<String, dynamic>> students = [];
-  String _displayedData = '';
-  String _DeptName = 'initial';
-  String _Established = '';
-  String _HodName = '';
-  String _HoDEmail = '';
+  String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/programmedetails/P04';
 
-  bool _connectedToDatabase = false;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData('D04'); // Fetch data automatically when the page loads.
-  }
-
-  Future<void> fetchData(String deptId) async {
-    final isConnectionSuccessful = await dataRetrievalService.testDatabaseConnection();
-
-    if (isConnectionSuccessful) {
-      _connectedToDatabase = true;
-    }
-
-    if (_connectedToDatabase) {
-      final departmentDetails = await dataRetrievalService.getStudents(deptId);
-
-      if (departmentDetails != null) {
-        final List<Map<String, dynamic>> combinedData = [];
-
-        for (final department in departmentDetails) {
-          final hodid = department['hodid'];
-          final staffDetails = await dataRetrievalService.getStaff(hodid);
-
-          if (staffDetails != null) {
-            department['staffDetails'] = staffDetails;
-          }
-
-          combinedData.add(department);
-        }
-
-        setState(() {
-
-          for (final data in students) {
-            _DeptName = data['dname'];
-            _Established =  data['Established_date'];
-
-            final staffDetails = data['staffDetails'];
-
-            if (staffDetails != null) {
-              for (final staff in staffDetails) {
-                _HodName = staff['name'];
-                _HoDEmail = staff['email'];
-              }
-            }
-          }
-        });
-      }
-    }
-    else{
-      _DeptName = 'Database not working';
-    }
-  }
-
-  
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return FutureBuilder<dynamic>(
+      future: fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Data is still being fetched, display a loading placeholder
+          return buildLoadingPlaceholder();
+        } else if (snapshot.hasError) {
+          // An error occurred while fetching data, display an error message
+          return buildErrorPlaceholder(snapshot.error.toString());
+        } else if (snapshot.hasData) {
+
+        // final jsonData = snapshot.data;
+        // final departmentData = jsonData['department'];
+        // final jsonString = json.encode(departmentData);
+        // final departmentName = departmentData['dname'];
+      final jsonData = snapshot.data;
+
+      final Department = jsonData['department'][0];
+      final departmentname = Department['dname'];
+      final newDepartmentName = departmentname.split(" and ")[0];
+      // final establishedDate = Department['established_date'];
+      // final datePart = establishedDate.split('T')[0];
+      // final programmOffered = Department['nprogram'].toString();
+      final programList = jsonData['Programme'][0]; 
+      final programName = programList['pname'];
+      final programDuration = (programList['programme_duration']).toString();
+      final establishedDate = programList['established_date'];
+      final establishedDataPart =establishedDate.split('T')[0];
+      final lastReviewDate = programList['last_reviwed_date'];
+      final reviewdDatePart = lastReviewDate.split('T')[0];
+     
+      final StaffList = jsonData['staff'][0];
+      final hodname = StaffList['name'];
+      final email = StaffList['email'];
+      final link = StaffList['imageurl'];
+
+          // Data has been successfully fetched
+          return ListView(
       padding: EdgeInsets.all(16.0),
       children: [
-       Container(
+        Container(
       color: Color.fromARGB(255, 255, 255, 255), // Background color
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -187,19 +182,10 @@ class _InformationTabState extends State<InformationTab> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SkeletonAnimation(
-        shimmerColor: Colors.grey,
-        borderRadius: BorderRadius.circular(10.0),
-        shimmerDuration: 1000,
-        child: Container(
-          width: 150,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey[300],
-          ),
-        ),
-      ),
+            Text(
+              newDepartmentName,
+              style: TextStyle(fontSize: 16),
+            ),
             SizedBox(height: 16),
             Text(
               'Title of the Award:',
@@ -208,61 +194,34 @@ class _InformationTabState extends State<InformationTab> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SkeletonAnimation(
-        shimmerColor: Colors.grey,
-        borderRadius: BorderRadius.circular(10.0),
-        shimmerDuration: 1000,
-        child: Container(
-          width: 150,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey[300],
-          ),
-        ),
-      ),
+            Text(
+              programName,
+              style: TextStyle(fontSize: 16),
+            ),
             SizedBox(height: 16),
             Text(
-              'Programme Duration',
+              'Programme Duration:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SkeletonAnimation(
-        shimmerColor: Colors.grey,
-        borderRadius: BorderRadius.circular(10.0),
-        shimmerDuration: 1000,
-        child: Container(
-          width: 150,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey[300],
-          ),
-        ),
-      ),
+            Text(
+              programDuration,
+              style: TextStyle(fontSize: 16),
+            ),
             SizedBox(height: 16),
             Text(
-              'Established Date',
+              'Established Date: ',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SkeletonAnimation(
-        shimmerColor: Colors.grey,
-        borderRadius: BorderRadius.circular(10.0),
-        shimmerDuration: 1000,
-        child: Container(
-          width: 150,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey[300],
-          ),
-        ),
-      ),
+            Text(
+              establishedDataPart,
+              style: TextStyle(fontSize: 16),
+            ),
             SizedBox(height: 16),
             Text(
               'Last Review Date:',
@@ -271,19 +230,10 @@ class _InformationTabState extends State<InformationTab> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SkeletonAnimation(
-        shimmerColor: Colors.grey,
-        borderRadius: BorderRadius.circular(10.0),
-        shimmerDuration: 1000,
-        child: Container(
-          width: 150,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey[300],
-          ),
-        ),
-      ),
+            Text(
+              reviewdDatePart,
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),
@@ -311,19 +261,13 @@ class _InformationTabState extends State<InformationTab> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Center(
-                        child:  SkeletonAnimation(
-                                shimmerColor: Colors.grey,
-                                borderRadius: BorderRadius.circular(10.0),
-                                shimmerDuration: 1000,
-                                child: Container(
-                                  width: 150,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.grey[300],
-                                  ),
-                                ),
-                              ),
+                        child: Text(
+                          'Current Batch of Students',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       SizedBox(height: 16),
                       Container(
@@ -344,17 +288,10 @@ class _InformationTabState extends State<InformationTab> {
                               color: Color(0xFF000000),
                             ),
                             SizedBox(width: 8),
-                           SkeletonAnimation(
-                              shimmerColor: Colors.grey,
-                              borderRadius: BorderRadius.circular(10.0),
-                              shimmerDuration: 1000,
-                              child: Container(
-                                width: 150,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                ),
+                            Text(
+                              'Fourth Years : 11th batch',
+                              style: TextStyle(
+                                fontSize: 16,
                               ),
                             ),
                           ],
@@ -379,17 +316,10 @@ class _InformationTabState extends State<InformationTab> {
                               color: Color(0xFF000000),
                             ),
                             SizedBox(width: 8),
-                             SkeletonAnimation(
-                              shimmerColor: Colors.grey,
-                              borderRadius: BorderRadius.circular(10.0),
-                              shimmerDuration: 1000,
-                              child: Container(
-                                width: 150,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                ),
+                            Text(
+                              'First Years : 14th batch',
+                              style: TextStyle(
+                                fontSize: 16,
                               ),
                             ),
                           ],
@@ -406,6 +336,8 @@ class _InformationTabState extends State<InformationTab> {
 
        
           SizedBox(height: 10),
+          
+          
         Container(
            decoration: BoxDecoration(
             border: Border.all(color: Colors.grey), // Add border styling as needed
@@ -431,15 +363,14 @@ class _InformationTabState extends State<InformationTab> {
           children: [
             ClipOval(
               child: Container(
-                
                 width: 100.0,
                 height: 100.0,
-                color: Colors.white, // Oval background color (you can replace this)
+                color: const Color.fromARGB(255, 199, 198, 198), // Oval background color (you can replace this)
                 child: Center(
                   child: Image.network(
-                    'https://cst.edu.bt/images/Campus/cstcampus2.jpg', // Add your image URL here
-                    width: 110.0,
-                    height: 110.0,
+                    link, // Add your image URL here
+                    width: 100.0,
+                    height: 100.0,
                   ),
                 ),
               ),
@@ -448,51 +379,39 @@ class _InformationTabState extends State<InformationTab> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SkeletonAnimation(
-                      shimmerColor: Colors.grey,
-                      borderRadius: BorderRadius.circular(10.0),
-                      shimmerDuration: 1000,
-                      child: Container(
-                        width: 150,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                    ),
+                Text(
+                  hodname,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF000000),
+                  ),
+                ),
                 SizedBox(height: 10.0),
                 Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: SkeletonAnimation(
-                        shimmerColor: Colors.grey,
-                        borderRadius: BorderRadius.circular(10.0),
-                        shimmerDuration: 1000,
-                        child: Container(
-                          width: 150,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.grey[300],
-                          ),
-                        ),
-                      ),
+                  child: Text(
+                    'Master in Blockchain',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFFF87D0C),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: SkeletonAnimation(
-                              shimmerColor: Colors.grey,
-                              borderRadius: BorderRadius.circular(10.0),
-                              shimmerDuration: 1000,
-                              child: Container(
-                                width: 150,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                ),
-                              ),
-                            ),
+                  child: Text(
+                    email,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFFF87D0C),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -502,24 +421,51 @@ class _InformationTabState extends State<InformationTab> {
           ],
         ),
         ),
-
       ],
+    );
+        
+
+        } else {
+          // Data is null or empty
+          return buildErrorPlaceholder('Data not available');
+        }
+      },
     );
   }
 
-  Widget _buildProgrammeItem(String programmeName, IconData icon) {
-    return Row(
-      children: [
-        Icon(icon, size: 24),
-        SizedBox(width: 16),
-        Text(
-          programmeName,
-          style: TextStyle(fontSize: 16),
-        ),
-      ],
+  Widget buildLoadingPlaceholder() {
+    return WProgramPage1();
+  }
+
+  Widget buildErrorPlaceholder(String errorMessage) {
+    return Center(
+      child: Text('Error: $errorMessage'),
     );
+  }
+
+  Future<dynamic> fetchData() async {
+    try {
+      final response = await http.get(Uri.parse(apiUrl)).timeout(Duration(seconds: 30));
+
+
+      if (response.statusCode == 200) {
+        final dynamic apiResponse = json.decode(response.body);
+        // print(apiResponse); // Print the JSON data in the terminal
+        return apiResponse;
+      } else {
+        print('API Error: Failed to load data');
+        return null; // Return null to indicate an error.
+      }
+    } catch (e) {
+      print('Error: $e');
+      print('Network Error: Failed to load data');
+      return null; // Return null to indicate an error.
+    }
   }
 }
+
+
+
 
 class Modules extends StatelessWidget {
   @override

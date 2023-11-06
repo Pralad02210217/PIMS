@@ -6,55 +6,16 @@ import 'package:programme_information_management_system/Departments/ScienceDepar
 
 import 'CDepartment/CDepartment.dart';
 import 'ITDepartment/ITDepartment.dart';
-void main() {
-  runApp(MaterialApp(
-    home: DepartmentPage(),
-  ));
-}
 
-class DepartmentPage extends StatefulWidget {
-  @override
-  _DepartmentPageState createState() => _DepartmentPageState();
-}
-
-class _DepartmentPageState extends State<DepartmentPage> {
-  final TextEditingController _searchController = TextEditingController();
-  List<DepartmentData> departments = [];
-
-  @override
-  void initState() {
-    departments = allDepartments;
-    _searchController.addListener(_onSearchChanged);
-    super.initState();
-  }
-
-  void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      if (query.isEmpty) {
-        departments = allDepartments;
-      } else {
-        departments = allDepartments
-            .where((department) => department.name.toLowerCase().contains(query))
-            .toList();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
+class DepartmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          SearchBar(searchController: _searchController),
+          SearchBar(),
           SizedBox(height: 20),
-          DepartmentList(departments: departments),
+          DepartmentList(),
         ],
       ),
     );
@@ -62,40 +23,64 @@ class _DepartmentPageState extends State<DepartmentPage> {
 }
 
 class SearchBar extends StatelessWidget {
-  final TextEditingController searchController;
-
-  SearchBar({required this.searchController});
-
- @override
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        color: Colors.blue,
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(color: Colors.blue), // Add a blue border
       ),
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: TextField(
-        controller: searchController,
         decoration: InputDecoration(
           hintText: 'Search for a department...',
-          prefixIcon: Icon(Icons.search, color: Colors.blue), // Make the icon blue
+          prefixIcon: Icon(Icons.search, color: Colors.white),
           border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.blue), // Make the hint text blue
         ),
-        style: TextStyle(color: Colors.black), // Make the input text blue
+        style: TextStyle(color: Colors.white),
       ),
     );
   }
 }
 
 class DepartmentList extends StatelessWidget {
-  final List<DepartmentData> departments;
-
-  DepartmentList({required this.departments});
-
   @override
   Widget build(BuildContext context) {
+    List<DepartmentData> departments = [
+      DepartmentData(
+        name: 'Information Technology Department',
+        image: 'assets/undraw_Software_engineer_re_tnjc.png',
+        pageToNavigate: ITDepartmentPage(),
+      ),
+      DepartmentData(
+        name: 'Civil Department',
+        image: 'assets/undraw_QA_engineers_dg5p.png',
+        pageToNavigate: CDepartmentPage(),
+      ),
+      DepartmentData(
+        name: 'Architecture Department',
+        image: 'assets/undraw_urban_design_kpu8.png',
+        pageToNavigate: ADepartmentPage(),
+      ),
+      DepartmentData(
+        name: 'Electrical Department',
+        image: 'assets/undraw_electricity_k2ft.png',
+        pageToNavigate: EDepartmentPage(),
+      ),
+      DepartmentData(
+        name: 'Electronic and Communication Department',
+        image: 'assets/undraw_circuit_sdmr.png',
+        pageToNavigate: ECEDepartmentPage(),
+      ),
+      DepartmentData(
+        name: 'Science And Humanities Department',
+        image: 'assets/undraw_Science_re_mnnr.png',
+        pageToNavigate: ScienceDepartmentPage(),
+      ),
+      // Add more department data for other departments
+    ];
+
     return Expanded(
       child: ListView(
         scrollDirection: Axis.vertical,
@@ -106,6 +91,7 @@ class DepartmentList extends StatelessWidget {
             pageToNavigate: department.pageToNavigate,
             onTap: () {
               // Define navigation when the department card is tapped
+
             },
           );
         }).toList(),
@@ -117,7 +103,9 @@ class DepartmentList extends StatelessWidget {
 class DepartmentData {
   final String name;
   final String image;
-  final Widget pageToNavigate;
+    final Widget pageToNavigate; 
+
+  
 
   DepartmentData({
     required this.name,
@@ -129,7 +117,8 @@ class DepartmentData {
 class DepartmentCard extends StatelessWidget {
   final String name;
   final String image;
-  final Widget pageToNavigate;
+  final Widget pageToNavigate; 
+  
   final VoidCallback onTap;
 
   DepartmentCard({
@@ -193,7 +182,7 @@ class DepartmentCard extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => pageToNavigate));
+                      MaterialPageRoute(builder: (context) => pageToNavigate));
                       // Add functionality to display department details
                     },
                     icon: Icon(
@@ -211,38 +200,3 @@ class DepartmentCard extends StatelessWidget {
     );
   }
 }
-
-// A list of all departments
-List<DepartmentData> allDepartments = [
-  DepartmentData(
-    name: 'Information Technology Department',
-    image: 'assets/undraw_Software_engineer_re_tnjc.png',
-    pageToNavigate: ITDepartmentPage(),
-  ),
-  DepartmentData(
-    name: 'Civil Department',
-    image: 'assets/undraw_QA_engineers_dg5p.png',
-    pageToNavigate: CDepartmentPage(),
-  ),
-  DepartmentData(
-    name: 'Architecture Department',
-    image: 'assets/undraw_urban_design_kpu8.png',
-    pageToNavigate: ADepartmentPage(),
-  ),
-  DepartmentData(
-    name: 'Electrical Department',
-    image: 'assets/undraw_electricity_k2ft.png',
-    pageToNavigate: EDepartmentPage(),
-  ),
-  DepartmentData(
-    name: 'Electronic and Communication Department',
-    image: 'assets/undraw_circuit_sdmr.png',
-    pageToNavigate: ECEDepartmentPage(),
-  ),
-  DepartmentData(
-    name: 'Science And Humanities Department',
-    image: 'assets/undraw_Science_re_mnnr.png',
-    pageToNavigate: ScienceDepartmentPage(),
-  ),
-  // Add more department data for other departments
-];

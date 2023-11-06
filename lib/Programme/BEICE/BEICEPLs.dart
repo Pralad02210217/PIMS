@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 class PreviousPLContent extends StatelessWidget {
-  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students//department/fullHod/D04';
+  final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students/programme/fullPl/P07';
 
   @override
   Widget build(BuildContext context) {
@@ -128,18 +128,22 @@ class LeftProfileContainer extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final name = apiResponse[1]['name'];
-    final starting_tenure = apiResponse[1]['starting_tenure'];
+
+    final imageLink= apiResponse[0]['imageurl'];
+    final name = 'Tashi';
+    final starting_tenure = apiResponse[0]['starting_tenure'];
     final dateStartingTenure = starting_tenure.split('T')[0];
-    final ending_tenure = apiResponse[1]['ending_tenure'];
+    final ending_tenure = apiResponse[0]['ending_tenure'];
     final dateEndingTenure = ending_tenure.split('T')[0];
-    final link = apiResponse[0]['imageurl'];
+    final link1 = apiResponse[2]['imageurl'];
+ 
+
     return Transform.translate(
       offset: Offset(0.0, 0.0), // Adjust the offset (x, y) as needed
       child: Column(
         children: [
           SizedBox(height: 30.0),
-          OvalImageContainer(imageUrl: 'https://www.cst.edu.bt/images/faculty-profile/itd/tamdinwangchukitd.jpeg'),
+          OvalImageContainer(imageUrl: '${imageLink}'),
           SizedBox(height: 120.0),
           Container(
             decoration: BoxDecoration(
@@ -152,14 +156,13 @@ class LeftProfileContainer extends StatelessWidget {
                 SizedBox(height: 8,),
                 Text("Starting Tenure: ${dateStartingTenure}"),
                 Text("Ending Tenure: ${dateEndingTenure}"),
-                Text("Office: 2nd floor ITC"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
           SizedBox(height: 120.0),
-          OvalImageContainer(imageUrl: '${link}'),
-
+          OvalImageContainer(imageUrl: '${link1}'),
         ],
       ),
     );
@@ -174,11 +177,18 @@ class RightProfileContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final link = apiResponse[1]['imageurl'];
-    final name = apiResponse[0]['name'];
-    final startingTenure = apiResponse[0]['starting_tenure'];
+    final name = apiResponse[1]['name'];
+    final startingTenure = apiResponse[1]['starting_tenure'];
     final dateStartingTenure = startingTenure.split('T')[0]; 
-    final endingTenure = apiResponse[0]['ending_tenure'];
+    final endingTenure = apiResponse[1]['ending_tenure'];
     final dateEndingTenure = endingTenure.split('T')[0];
+    final name1 = apiResponse[2]['name'];
+    final startingTenure1 = apiResponse[2]['starting_tenure'];
+    final dateStartingTenure1 = startingTenure.split('T')[0]; 
+    final endingTenure1 = apiResponse[2]['ending_tenure'];
+    final dateEndingTenure1 = endingTenure.split('T')[0];
+
+
     return Transform.translate(
       offset: Offset(0.0, 5.0), // Adjust the offset (x, y) as needed
       child: Column(
@@ -190,11 +200,11 @@ class RightProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("Tandin Wangchuk", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: 12/12/2013"),
-                Text("Ending Tenure: 12/12/2013"),
-                Text("Office: 2nd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure}"),
+                Text("Ending Tenure: ${dateEndingTenure}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
@@ -209,16 +219,15 @@ class RightProfileContainer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text("${name}", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("${name1}", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8,),
-                Text("Starting Tenure: ${dateStartingTenure}"),
-                Text("Ending Tenure: ${dateEndingTenure}"),
-                Text("Office: 3rd floor ITC"),
+                Text("Starting Tenure: ${dateStartingTenure1}"),
+                Text("Ending Tenure: ${dateEndingTenure1}"),
+                Text("Office: 1st floor ADM"),
                 Text("Contact: 17777777"),
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -278,7 +287,7 @@ class LinePainter extends CustomPainter {
     final middleX = size.width / 2;
 
     // Draw the middle vertical line
-    final start = Offset(middleX, -80);
+    final start = Offset(middleX, -85);
     final end = Offset(middleX, size.height);
     canvas.drawLine(start, end, paint);
 
@@ -299,7 +308,7 @@ class LinePainter extends CustomPainter {
 
       // Increase the line height to 200 for the next line
       if (y == lineHeight) {
-        lineHeight = 200.0;
+        lineHeight = 215.0;
       }
     }
   }

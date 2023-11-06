@@ -1,21 +1,61 @@
-// lib/Programme/Programme.dart
-
 import 'package:flutter/material.dart';
+import 'package:programme_information_management_system/Programme/BEA/BEA.dart';
+import 'package:programme_information_management_system/Programme/BECivil/BEC.dart';
+import 'package:programme_information_management_system/Programme/BEECE/BEECE.dart';
+import 'package:programme_information_management_system/Programme/BEElectrical/BEE.dart';
+import 'package:programme_information_management_system/Programme/BEGeology/BEG.dart';
+import 'package:programme_information_management_system/Programme/BEICE/BEICE.dart';
+import 'package:programme_information_management_system/Programme/BEWater/BEW.dart';
 import 'BEIT/BEIT.dart';
+void main() {
+  runApp(MaterialApp(
+    home: ProgrammePage(),
+  ));
+}
 
-class ProgrammePage extends StatelessWidget {
+class ProgrammePage extends StatefulWidget {
+  @override
+  _ProgrammePageState createState() => _ProgrammePageState();
+}
+
+class _ProgrammePageState extends State<ProgrammePage> {
+  final TextEditingController _searchController = TextEditingController();
+  List<ProgrammeData> programmes = [];
+
+  @override
+  void initState() {
+    programmes = allprogrammes;
+    _searchController.addListener(_onSearchChanged);
+    super.initState();
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        programmes = allprogrammes;
+      } else {
+        programmes = allprogrammes
+            .where((department) => department.name.toLowerCase().contains(query))
+            .toList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Programme'),
-        centerTitle: true,
-      ),
       body: Column(
         children: [
-          SearchBar(), // Create a custom SearchBar widget
+          SearchBar(searchController: _searchController),
           SizedBox(height: 20),
-          ProgrammeList(), // Create a custom ProgrammeList widget
+          ProgrammeList(programmes: programmes),
         ],
       ),
     );
@@ -23,79 +63,51 @@ class ProgrammePage extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
+  final TextEditingController searchController;
+
+  SearchBar({required this.searchController});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(50), // Create a rounded shape
+        borderRadius: BorderRadius.circular(50),
+        border: Border.all(color: Colors.blue), // Add a blue border
       ),
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: TextField(
+        controller: searchController,
         decoration: InputDecoration(
-          hintText: 'Search for a program...',
-          prefixIcon: Icon(Icons.search, color: Colors.white),
+          hintText: 'Search for a programme...',
+          prefixIcon: Icon(Icons.search, color: Colors.blue), // Make the icon blue
           border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.blue), // Make the hint text blue
         ),
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black), // Make the input text blue
       ),
     );
   }
 }
 
 class ProgrammeList extends StatelessWidget {
+  final List<ProgrammeData> programmes;
+
+  ProgrammeList({required this.programmes});
+
   @override
   Widget build(BuildContext context) {
-    // Create a list of program data, e.g., ProgrammeData objects
-    List<ProgrammeData> programs = [
-       ProgrammeData(
-        name: 'M.E. Construction Management',
-        image: 'assets/mconst.jpg',
-      ),
-       ProgrammeData(
-        name: 'M.E Renewable Energy',
-        image: 'assets/mere.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Information Technology',
-        image: 'assets/beit.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Civil Engineering',
-        image: 'assets/becivil.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Architecture',
-        image: 'assets/bearch.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Electrical Engineering',
-        image: 'assets/beelectical.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Electronics & Communication',
-        image: 'assets/beece.jpg',
-      ),
-      ProgrammeData(
-        name: 'B.E Geology',
-        image: 'assets/begelo.jpg',
-      ),
-       ProgrammeData(
-        name: 'B.E Instrumentation and Controls',
-        image: 'assets/beice.jpg',
-      ),
-      // Add more program data for other programs
-    ];
-
     return Expanded(
       child: ListView(
-        scrollDirection: Axis.vertical, // Make the list scroll vertically
-        children: programs.map((program) {
-          return ProgrammeCard(
-            name: program.name,
-            image: program.image,
-            
+        scrollDirection: Axis.vertical,
+        children: programmes.map((department) {
+          return DepartmentCard(
+            name: department.name,
+            image: department.image,
+            pageToNavigate: department.pageToNavigate,
+            onTap: () {
+              // Define navigation when the department card is tapped
+            },
           );
         }).toList(),
       ),
@@ -106,44 +118,92 @@ class ProgrammeList extends StatelessWidget {
 class ProgrammeData {
   final String name;
   final String image;
+  final Widget pageToNavigate;
 
   ProgrammeData({
     required this.name,
     required this.image,
+    required this.pageToNavigate,
   });
 }
 
-class ProgrammeCard extends StatelessWidget {
+class DepartmentCard extends StatelessWidget {
   final String name;
   final String image;
+  final Widget pageToNavigate;
+  final VoidCallback onTap;
 
-  ProgrammeCard({required this.name, required this.image});
+  DepartmentCard({
+    required this.name,
+    required this.image,
+    required this.pageToNavigate,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Navigate to the ITDepartmentPage when the card is tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ITProgramPage()),
-        );
-      },
-      child: Container(
+      onTap: onTap,
+      child: Card(
         margin: EdgeInsets.all(16),
-        child: Column(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.grey[200],
+        child: Row(
           children: [
-            Image.asset(
-              image,
+            Container(
+              width: 100,
               height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange,
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0),
+                ),
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            SizedBox(height: 8),
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => pageToNavigate));
+                      // Add functionality to display department details
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      color: Color.fromARGB(255, 245, 173, 4),
+                    ),
+                    label: Text('Display'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -152,3 +212,48 @@ class ProgrammeCard extends StatelessWidget {
     );
   }
 }
+
+// A list of all programmes
+List<ProgrammeData> allprogrammes = [
+  ProgrammeData(
+    name: 'Information Technology Engineering',
+    image: 'assets/undraw_Software_engineer_re_tnjc.png',
+    pageToNavigate: ITProgramPage(),
+  ),
+  ProgrammeData(
+    name: 'Civil Engineering',
+    image: 'assets/undraw_QA_engineers_dg5p.png',
+    pageToNavigate: CProgramPage(),
+  ),
+    ProgrammeData(
+    name: 'Geology Engineering',
+    image: 'assets/undraw_QA_engineers_dg5p.png',
+    pageToNavigate: GProgramPage(),
+  ),
+  ProgrammeData(
+    name: 'Architecture ',
+    image: 'assets/undraw_urban_design_kpu8.png',
+    pageToNavigate: AProgramPage(),
+  ),
+  ProgrammeData(
+    name: 'Electrical Engineering',
+    image: 'assets/undraw_electricity_k2ft.png',
+    pageToNavigate: EProgramPage(),
+  ),
+  ProgrammeData(
+    name: 'Electronic and Communication Engineering',
+    image: 'assets/undraw_circuit_sdmr.png',
+    pageToNavigate: ECEProgramPage(),
+  ),
+  ProgrammeData(
+    name: 'Water Engineering',
+    image: 'assets/undraw_Science_re_mnnr.png',
+    pageToNavigate: WProgramPage(),
+  ),
+    ProgrammeData(
+    name: 'Instrumentation and Controls Engineering',
+    image: 'assets/undraw_circuit_sdmr.png',
+    pageToNavigate: ICEProgramPage(),
+  ),
+  // Add more department data for other programmes
+];

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:programme_information_management_system/Programme/BEIT/BEITModules.dart';
-import 'BEITPLs.dart';
-import 'BEITElectives.dart';
+import 'BEAPLs.dart';
+import 'BEAElectives.dart';
 import 'package:programme_information_management_system/DateRetrival/data_retrival.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
@@ -9,7 +9,7 @@ import 'package:skeleton_text/skeleton_text.dart';
 
 
 
-class ITProgramPage1 extends StatelessWidget {
+class AProgramPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

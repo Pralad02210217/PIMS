@@ -25,7 +25,7 @@ class ITProgramPage extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Information Technology Department'),
+          title: Text('Information Technology Engineering'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -343,7 +343,7 @@ class _InformationTabState extends State<InformationTab> {
             borderRadius: BorderRadius.circular(8.0), // Add border radius as needed
           ),
           child: ExpansionTile(
-          title: Text('Present Program Leader'),
+          title: Text('Present Programme Leader'),
           children: [
             Container(
               margin: EdgeInsets.all(1.0),
