@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -150,19 +149,19 @@ class _LandingPageState extends State<LandingPage> {
               ),
               Positioned(
                 left: 44.5 * fem,
-                top: 340 * fem,
+                top: 280 * fem,
                 child: Align(
                   child: SizedBox(
                     width: 311 * fem,
-                    height: 32 * fem,
+                    height: 40 * fem,
                     child: Text(
-                      'In pursuit of tomorrow’s technology ',
+                      '"In pursuit of tomorrow’s technologist"',
                       textAlign: TextAlign.center,
-                      style: safeGoogleFont(
-                        'Kalam',
-                        fontSize: 20 * ffem,
+                      style: TextStyle(
+                        fontSize: 18 * ffem,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff00a3ff),
+                        color: Color.fromARGB(255, 38, 120, 187),
+                        // color: Color(0xff00a3ff),
                       ),
                     ),
                   ),
@@ -170,34 +169,37 @@ class _LandingPageState extends State<LandingPage> {
               ),
               Positioned(
                 left: 22.5 * fem,
-                top: 383 * fem,
+                top: 323 * fem,
                 child: Align(
                   child: SizedBox(
                     width: 339 * fem,
-                    height: 96 * fem,
+                    height: 90 * fem,
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        style: safeGoogleFont(
-                          'Kalam',
+                        style: TextStyle(
                           fontSize: 20 * ffem,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff469d38),
                         ),
                         children: [
                           TextSpan(
                             text: 'Our Vision\n',
-                            style: safeGoogleFont(
-                              'Kalam',
+                            style: TextStyle(
                               fontSize: 20 * ffem,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff469d38),
+                              color: Color.fromARGB(255, 21, 96, 156),
+                              // color: Color(0xff469d38),
                             ),
                           ),
                           TextSpan(
                             text:
-                                '“A centre of excellence in science and technology enriched with GNH values. “',
-                          ),
+                                '"A centre of excellence in science and technology enriched with GNH values."',
+                            style: TextStyle(
+                              fontSize: 17,
+                               color: Color.fromARGB(255, 42, 101, 146), 
+                            ),
+                            ),
+                            
                         ],
                       ),
                     ),
@@ -205,24 +207,27 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               ),
               Positioned(
-                left: 58 * fem,
-                top: 489 * fem,
+                left: 33 * fem,
+                top: 423 * fem,
                 child: Container(
+                  
                   padding:
                       EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 688 * fem),
-                  width: 300 * fem,
+                  width: 320 * fem,
                   height: 1249 * fem,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        
                         margin: EdgeInsets.fromLTRB(
-                            0 * fem, 0 * fem, 0 * fem, 11 * fem),
+                            20 * fem, 20 * fem, 0 * fem, 11 * fem),
                         width: 279 * fem,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
+                              
                               width: double.infinity,
                               height: 119 * fem,
                               child: Row(
@@ -236,11 +241,21 @@ class _LandingPageState extends State<LandingPage> {
                                     width: 133 * fem,
                                     height: double.infinity,
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Color(0xff00a3ff)),
-                                      color: Color(0xffff5a5a),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.orange, // Orange border color
+                                        width: 2.0, // Border width
+                                      ),
                                       borderRadius:
                                           BorderRadius.circular(20 * fem),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                     ),
                                     child: Center(
                                       child: SizedBox(
@@ -251,11 +266,10 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Text(
                                             '7\nDepartments',
                                             textAlign: TextAlign.center,
-                                            style: safeGoogleFont(
-                                              'Kalam',
-                                              fontSize: 20 * ffem,
+                                            style: TextStyle(
+                                              fontSize: 16 * ffem,
                                               fontWeight: FontWeight.w700,
-                                              color: Color(0xffffffff),
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
@@ -268,9 +282,19 @@ class _LandingPageState extends State<LandingPage> {
                                     width: 133 * fem,
                                     height: double.infinity,
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Color(0xff00a3ff)),
-                                      color: Color(0xff3546de),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.orange, // Orange border color
+                                        width: 2.0, // Border width
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                       borderRadius:
                                           BorderRadius.circular(20 * fem),
                                     ),
@@ -283,11 +307,10 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Text(
                                             '10\nProgrammes',
                                             textAlign: TextAlign.center,
-                                            style: safeGoogleFont(
-                                              'Kalam',
-                                              fontSize: 20 * ffem,
+                                            style: TextStyle(
+                                              fontSize: 16 * ffem,
                                               fontWeight: FontWeight.w700,
-                                              color: Color(0xffffffff),
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
@@ -314,9 +337,19 @@ class _LandingPageState extends State<LandingPage> {
                                     width: 133 * fem,
                                     height: double.infinity,
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Color(0xff00a3ff)),
-                                      color: Color(0xff4ad533),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.orange, // Orange border color
+                                        width: 2.0, // Border width
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                       borderRadius:
                                           BorderRadius.circular(20 * fem),
                                     ),
@@ -329,11 +362,10 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Text(
                                             '3\nNew\nProgrammes',
                                             textAlign: TextAlign.center,
-                                            style: safeGoogleFont(
-                                              'Kalam',
-                                              fontSize: 20 * ffem,
+                                            style: TextStyle(
+                                              fontSize: 16 * ffem,
                                               fontWeight: FontWeight.w700,
-                                              color: Color(0xffffffff),
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
@@ -346,9 +378,19 @@ class _LandingPageState extends State<LandingPage> {
                                     width: 133 * fem,
                                     height: double.infinity,
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Color(0xff00a3ff)),
-                                      color: Color(0xff7a22a3),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.orange, // Orange border color
+                                        width: 2.0, // Border width
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                       borderRadius:
                                           BorderRadius.circular(20 * fem),
                                     ),
@@ -361,11 +403,10 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Text(
                                             '1\nNotifications',
                                             textAlign: TextAlign.center,
-                                            style: safeGoogleFont(
-                                              'Kalam',
-                                              fontSize: 20 * ffem,
+                                            style: TextStyle(
+                                              fontSize: 16 * ffem,
                                               fontWeight: FontWeight.w700,
-                                              color: Color(0xffffffff),
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
@@ -378,53 +419,6 @@ class _LandingPageState extends State<LandingPage> {
                             SizedBox(
                               height: 31 * fem,
                             ),
-                            Container(
-                              constraints: BoxConstraints(
-                                maxWidth: 270 * fem,
-                              ),
-                              child: RichText(
-                                text: TextSpan(
-                                  style: safeGoogleFont(
-                                    'Poppins',
-                                    fontSize: 12 * ffem,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff000000),
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          'The College currently offers the following programs:\n',
-                                      style: safeGoogleFont(
-                                        'Kalam',
-                                        fontSize: 12 * ffem,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xffffa500),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          'Master of Engineering in Renewable Energy\nMasters in Construction Management\n',
-                                      style: safeGoogleFont(
-                                        'Kalam',
-                                        fontSize: 12 * ffem,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff000000),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          'Four-year undergraduate engineering programs in the following disciplines:\n',
-                                      style: safeGoogleFont(
-                                        'Kalam',
-                                        fontSize: 12 * ffem,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xffffa500),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -432,9 +426,40 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
               ),
+              Positioned(
+                left: 38.5 * fem,
+                top: 750 * fem,
+                child: Align(
+                  child: SizedBox(
+                    width: 319 * fem,
+                    height: 60 * fem,
+                    child: RichText(
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 20 * ffem,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          TextSpan(
+                            text:
+                              'All the academic programmes offered by the College are validated and adopted by the Royal University of Bhutan (RUB) and National Accreditation Council of Bhutan.',
+                            style: TextStyle(
+                              fontSize: 12 * ffem,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff000000),
+                            ),
+                          ),                        
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
+        
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:programme_information_management_system/Programme/BEIT/Modules/Page1.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
 class Page1 extends StatefulWidget {
@@ -75,7 +76,7 @@ class _Page1State extends State<Page1> {
           future: data,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return SkeletonLoading();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -99,6 +100,8 @@ class _Page1State extends State<Page1> {
     );
   }
 }
+
+
 final Map<String, String> columnHeadersMapping = {
   
   'mname': 'Name',

@@ -1,8 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:programme_information_management_system/Programme/BEIT/Modules/Page1.dart';
+
+
 class PreviousPLContent extends StatelessWidget {
   final String apiUrl = 'https://node-api-6l0w.onrender.com/api/v1/students//department/fullHod/D03';
 
@@ -13,7 +15,7 @@ class PreviousPLContent extends StatelessWidget {
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: SkeletonLoading());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
@@ -148,7 +150,7 @@ class LeftProfileContainer extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              border: Border.all(color: Color(0xff48992c)), 
+              border: Border.all(color: Colors.orange), 
             ),
             child: Column(
               children: [
@@ -196,7 +198,7 @@ class RightProfileContainer extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              border: Border.all(color: Color(0xff48992c), width: 1.0), 
+              border: Border.all(color: Colors.orange, width: 1.0), 
             ),
             child: Column(
               children: [
@@ -215,7 +217,7 @@ class RightProfileContainer extends StatelessWidget {
            Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              border: Border.all(color: Color(0xff48992c), width: 1.0), 
+              border: Border.all(color: Colors.orange, width: 1.0), 
             ),
             child: Column(
               children: [
@@ -248,8 +250,8 @@ class OvalImageContainer extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.green, // Border color
-          width: 4.0, // Border width
+          color: Colors.orange, // Border color
+          width: 2.0, // Border width
         ),
         image: DecorationImage(
           fit: BoxFit.cover,

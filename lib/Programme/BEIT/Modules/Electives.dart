@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:programme_information_management_system/Programme/BEIT/Modules/Page1.dart';
+
 
 class Electives extends StatefulWidget {
   @override
@@ -62,8 +64,17 @@ class _ElectivesState extends State<Electives> {
           height: 900,
           child: Column(
             children: [
+              const SizedBox(
+                height: 10,
+              ),
               SectionWidget('Elective 1', dataSemester1),
+              const SizedBox(
+                height: 20,
+              ),
               SectionWidget('Elective 2', dataSemester2),
+              const SizedBox(
+                height: 20,
+              ),
               SectionWidget('Elective 3', dataSemester3),
             ],
           ),
@@ -110,7 +121,7 @@ class SemesterTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Text("No data available");
+      return SkeletonLoading();
     }
 
     return SingleChildScrollView(
@@ -149,7 +160,7 @@ class FixedColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Text("No data available");
+      return SizedBox.shrink();
     }
 
     return SingleChildScrollView(

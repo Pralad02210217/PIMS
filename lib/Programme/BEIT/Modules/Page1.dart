@@ -75,7 +75,8 @@ class _Page1State extends State<Page1> {
           future: data,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              // return CircularProgressIndicator();
+              return SkeletonLoading();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -99,6 +100,37 @@ class _Page1State extends State<Page1> {
     );
   }
 }
+
+class SkeletonLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: SkeletonAnimation(
+            shimmerColor: Colors.grey,
+            borderRadius: BorderRadius.circular(10.0),
+            shimmerDuration: 1000,
+            child: Container(
+              width: 150,
+              height: 20,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.grey[300],
+              ),
+            ),
+          ),
+        ),
+        Text('Loading...', style: TextStyle(fontSize: 16, color: Colors.grey)),
+      ],
+    );
+  }
+}
+
+
+
 final Map<String, String> columnHeadersMapping = {
   
   'mname': 'Name',

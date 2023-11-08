@@ -26,6 +26,7 @@ class ITProgramPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Information Technology Engineering'),
+          backgroundColor: Color(0xFF0028A8),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
@@ -131,20 +132,21 @@ class _InformationTabState extends State<InformationTab> {
                       borderRadius: BorderRadius.circular(35),
                       color: Color(0x960028a8), // Positioned rectangle color
                     ),
-                    child: Center( // Center the text
+                    child: const Center( // Center the text
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center, // Center text vertically
                         children: [
                           Text('AIM:', style: TextStyle(fontSize: 16, color: Colors.white)),
                           SizedBox(height: 4), // Add some spacing
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8), // Add horizontal padding
+                            padding: EdgeInsets.symmetric(horizontal: 8), // Add horizontal padding
                             child: Text(
-                              'The Department of Information Technology aims to develop Information Technology Professionals with specializations in Networking, Software Engineering, or Information Security who will be able to contribute to the development of computing technology in the country through Research, Innovation, Creativity, and Enterprise with ethical and professional responsibility.',
+                              'The Bachelor of Engineering in Information Technology aims to develop Information Technology Professionals with specializations in Networking, Software Engineering, or Information Security who will be able to contribute to the development of computing technology in the country through Research, Innovation, Creativity, and Enterprise with ethical and professional responsibility.',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
                               ),
+                             textAlign: TextAlign.justify,
                               maxLines: 5, // Limit the number of lines to fit within the container
                             ),
                           ),

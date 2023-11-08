@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Modules/Electives.dart'; // Import Page1
 
-
-
-
-
 class newElectives extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -14,6 +14,8 @@ class _LoginState extends State<Login> {
   late Size mediaSize;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isPasswordVisible = false;
+
   final String defaultUsername = "admin";
   final String defaultPassword = "admin";
   String errorMessage = "";
@@ -30,21 +32,21 @@ class _LoginState extends State<Login> {
             Container(
               constraints:
                   BoxConstraints(maxHeight: 200, maxWidth: double.infinity),
-              decoration: BoxDecoration(
-                color: mycolor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.zero,
-                  topRight: Radius.zero,
-                  bottomLeft: Radius.elliptical(700, 590),
-                  bottomRight: Radius.elliptical(700, 590),
-                ),
-                image: DecorationImage(
-                  image: AssetImage('Images/basketball_Login.jpeg'),
-                  fit: BoxFit.fitWidth,
-                  colorFilter: ColorFilter.mode(
-                      mycolor.withOpacity(0.4), BlendMode.dstATop),
-                ),
-              ),
+                  decoration: BoxDecoration(
+                    color: mycolor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.zero,
+                      topRight: Radius.zero,
+                      bottomLeft: Radius.elliptical(700, 590),
+                      bottomRight: Radius.elliptical(700, 590),
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage('Images/basketball_Login.jpeg'),
+                      fit: BoxFit.fitWidth,
+                      colorFilter: ColorFilter.mode(
+                          mycolor.withOpacity(0.4), BlendMode.dstATop),
+                    ),
+                  ),
             ),
 
             Padding(
@@ -56,7 +58,7 @@ class _LoginState extends State<Login> {
                     'Login',
                     style: TextStyle(
                       color: Color(0xFF0028A8),
-                      fontSize: 40,
+                      fontSize: 30,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -78,16 +80,27 @@ class _LoginState extends State<Login> {
                   // Password
                   TextField(
                     controller: passwordController,
-                    obscureText: true,
+                    obscureText: !isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(10),
                         child: SvgPicture.asset('Images/password.svg'),
                       ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SvgPicture.asset('Images/password_hide.svg'),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: SvgPicture.asset(
+                            isPasswordVisible
+                                ? 'Images/password_show.svg'
+                                : 'Images/password_hide.svg',
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -151,7 +164,7 @@ class _LoginState extends State<Login> {
                               'Login',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 19,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -198,7 +211,7 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 30),
                   // Sign up using google button
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
                     child: ElevatedButton(
                       onPressed: () {
                         // Add your sign up with Google action here
@@ -215,15 +228,15 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            'Images/google_logo.png',
-                            height: 35, // Adjust the height as needed
-                            width: 35, // Adjust the width as needed
+                            'Images/Google.png',
+                            height: 25, // Adjust the height as needed
+                            width: 25, // Adjust the width as needed
                           ),
                           SizedBox(width: 10),
                           Text(
                             'Sign Up with Google',
                             style: TextStyle(
-                              fontSize: 19,
+                              fontSize: 16,
                             ),
                           ),
                         ],

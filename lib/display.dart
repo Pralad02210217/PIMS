@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:programme_information_management_system/AboutUs/AboutUs.dart';
+import 'package:programme_information_management_system/Settings/Settings.dart';
 import 'HomePage/LandingPage.dart'; // Import LandingPage.dart
-import 'AboutUs/AboutUs.dart'; // Import AboutUs.dart
 import 'Departments/Department.dart'; // Import Department.dart
 import 'Programme/Programme.dart'; // Import Programme.dart
 import 'login.dart';
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(controller: _tabController),
-      drawer: MyDrawer(controller: _tabController),
+      drawer: MyDrawer(),
     );
   }
 }
@@ -79,7 +80,7 @@ class MyAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabTitles = ['Home', 'Departments', 'Programme', 'About Us'];
     return AppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xFF0028A8),
       leading: IconButton(
         icon: Icon(Icons.menu),
         onPressed: () {
@@ -128,17 +129,16 @@ class MyBottomNavigationBar extends StatelessWidget {
           text: 'Programme',
         ),
       ],
-      labelColor: Colors.blue,
+      labelColor: const Color.fromARGB(255, 0, 40, 168),
       unselectedLabelColor: Colors.black,
       indicatorSize: TabBarIndicatorSize.label,
     );
   }
 }
 
+//Change this for the menu bar
 class MyDrawer extends StatelessWidget {
-  final TabController controller;
-
-  MyDrawer({required this.controller});
+  const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -146,56 +146,68 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
+          const UserAccountsDrawerHeader(
+            currentAccountPicture: Center(
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/cst.jpg"),
+                radius: 70,
+              ),
+            ),
             accountName: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Programme Information Management", style: TextStyle(fontSize: 16)),
-                Text("System", style: TextStyle(fontSize: 16)),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("PIMS", style: TextStyle(fontSize: 16)),
+                // Text("Programme Information", style: TextStyle(fontSize: 16)),
+                // Text("Management System", style: TextStyle(fontSize: 16)),
               ],
             ),
-            accountEmail: Text("PIMS.cst@rub.edu.bt"),
-            currentAccountPicture: Center(
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/cst.jpeg"),
-              ),
-            ),
+            accountEmail: Text("info.cst@rub.edu.bt"),
+            
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
             onTap: () {
-              controller.animateTo(0);
+              // DefaultTabController.of(context)!.animateTo(1);
               Navigator.of(context).pop();
+               Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>  LandingPage(),
+                ));
             },
           ),
+
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.business),
-            title: Text('Departments'),
-            onTap: () {
-              controller.animateTo(1);
-              Navigator.of(context).pop();
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.book),
-            title: Text('Programme'),
-            onTap: () {
-              controller.animateTo(2);
-              Navigator.of(context).pop();
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text('About Us'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUsPage())); // Navigate to the AboutUsPage
+              Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>  Settings(),
+                ));
             },
           ),
+          
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.power_settings_new),
+            leading: const Icon(Icons.info),
+            title: const Text('About Us'),
+            onTap: () {
+              // DefaultTabController.of(context)!.animateTo(0); // Navigate to the About Us page (index 0)
+              Navigator.of(context).pop();
+               Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>  AboutUsPage(),
+                ));
+            },
+          ), 
+
+          const Divider(),
+          ListTile(
+            leading: Icon(Icons.logout),
             title: Text('Log Out'),
             onTap: () {
               Navigator.of(context).pop();
