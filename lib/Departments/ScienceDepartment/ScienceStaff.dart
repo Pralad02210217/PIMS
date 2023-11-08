@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'Test.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 class Staff {
   final String name;
@@ -106,7 +107,13 @@ class _StaffContentState extends State<StaffContent> {
               ),
             ),
             if (isLoading) // Display loading indicator when data is being fetched
-              Center(child: CircularProgressIndicator()),
+              // Center(child: CircularProgressIndicator()),
+              SkeletonAnimation(
+                shimmerColor: Colors.grey,
+                borderRadius: BorderRadius.circular(10.0),
+                shimmerDuration: 1000,
+                child: Text('Loading...', style: TextStyle(fontSize: 16, color: Colors.grey)),
+              ),
             if (!isLoading && staffList.isNotEmpty)
               ListView.builder(
                 shrinkWrap: true,

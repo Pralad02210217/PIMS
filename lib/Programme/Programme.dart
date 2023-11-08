@@ -72,7 +72,7 @@ class SearchBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(color: Colors.blue), // Add a blue border
+        border: Border.all(color: const Color.fromARGB(255, 0, 84, 153)), // Add a blue border
       ),
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -80,9 +80,9 @@ class SearchBar extends StatelessWidget {
         controller: searchController,
         decoration: InputDecoration(
           hintText: 'Search for a programme...',
-          prefixIcon: Icon(Icons.search, color: Colors.blue), // Make the icon blue
+          prefixIcon: Icon(Icons.search, color: const Color.fromARGB(255, 0, 84, 153)), // Make the icon blue
           border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.blue), // Make the hint text blue
+          hintStyle: TextStyle(color: const Color.fromARGB(255, 0, 84, 153)), // Make the hint text blue
         ),
         style: TextStyle(color: Colors.black), // Make the input text blue
       ),
